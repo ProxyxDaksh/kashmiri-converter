@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Daksh Speaks Kashmiri</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #080810;
+  --surface: #111118;
+  --surface2: #18181f;
+  --surface3: #1e1e28;
+  --border: rgba(255,255,255,0.06);
+  --border-glow: rgba(255,138,42,0.35);
+  --text: #eeeae4;
+  --muted: rgba(238,234,228,0.38);
+  --dim: rgba(238,234,228,0.18);
+  --accent: #ff8c2a;
+  --accent-dim: rgba(255,140,42,0.12);
+  --accent2: #ffbe6a;
+  --green: #3ecf8e;
+  --green-dim: rgba(62,207,142,0.1);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.bg-noise {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.bg-orb1 {
+  position: fixed; z-index: 0; pointer-events: none;
+  width: 700px; height: 700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,140,42,0.07) 0%, transparent 65%);
+  top: -280px; left: -200px;
+  animation: orbFloat 14s ease-in-out infinite;
+}
+
+.bg-orb2 {
+  position: fixed; z-index: 0; pointer-events: none;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(62,207,142,0.05) 0%, transparent 65%);
+  bottom: -180px; right: -150px;
+  animation: orbFloat 18s ease-in-out infinite reverse;
+}
+
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0); }
+  33%      { transform: translate(25px,-18px); }
+  66%      { transform: translate(-18px,14px); }
+}
+
+.app {
+  position: relative; z-index: 1;
+  max-width: 740px; margin: 0 auto;
+  padding: 36px 20px 52px;
+  display: flex; flex-direction: column; gap: 18px;
+  min-height: 100svh;
+}
+
+/* HEADER */
+.header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 16px;
+  animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.brand-name {
+  font-size: clamp(26px, 6.5vw, 48px);
+  font-weight: 800; line-height: 1.05; letter-spacing: -1.5px;
+  background: linear-gradient(140deg, var(--text) 20%, var(--accent2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-koshur {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(12px, 2.5vw, 15px);
+  color: var(--accent); margin-top: 5px;
+}
+
+.live-badge {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 13px;
+  background: var(--green-dim);
+  border: 1px solid rgba(62,207,142,0.18);
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 1.2px;
+  color: var(--green); flex-shrink: 0; margin-top: 4px;
+}
+
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(62,207,142,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(62,207,142,0); }
+}
+
+/* DIRECTION ROW */
+.dir-row {
+  display: flex; align-items: center; gap: 10px;
+  animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+
+.lang-tab {
+  flex: 1; display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+  padding: 13px 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+  user-select: none;
+}
+
+.lang-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.12); }
+.lang-tab.active { background: var(--accent-dim); border-color: var(--border-glow); color: var(--accent); }
+.lang-tab .em { font-size: 17px; }
+
+.swap-btn {
+  width: 46px; height: 46px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 14px; cursor: pointer; color: var(--accent);
+  font-size: 19px; line-height: 1;
+  transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+
+.swap-btn:hover { background: var(--accent-dim); border-color: var(--border-glow); transform: rotate(180deg); }
+.swap-btn:active { transform: rotate(180deg) scale(0.9); }
+
+/* CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) 0.17s both;
+}
+
+.card:focus-within {
+  border-color: rgba(255,140,42,0.2);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,140,42,0.08);
+}
+
+.in-panel { padding: 22px 22px 14px; border-bottom: 1px solid var(--border); }
+
+.panel-top {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 12px;
+}
+
+.panel-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 2.2px; text-transform: uppercase;
+  color: var(--accent); display: flex; align-items: center; gap: 8px;
+}
+
+.panel-label::before { content: ''; width: 18px; height: 1px; background: currentColor; opacity: 0.4; }
+
+.char-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--dim);
+  background: var(--surface2); border-radius: 6px; padding: 2px 7px;
+}
+
+textarea {
+  width: 100%; min-height: 130px;
+  background: transparent; border: none; outline: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 400; line-height: 1.7;
+  color: var(--text); resize: none; caret-color: var(--accent);
+}
+
+textarea::placeholder { color: var(--dim); }
+@media (max-width: 600px) { textarea { font-size: 16px; } }
+
+.in-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+
+.btn-clear {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--dim); font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.btn-clear:hover { color: var(--text); border-color: rgba(255,255,255,0.14); }
+
+.btn-go {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border: none; border-radius: 11px;
+  background: var(--accent); color: #0a0a10;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.2px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+}
+
+.btn-go::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn-go:hover { box-shadow: 0 4px 20px rgba(255,140,42,0.35); }
+.btn-go:hover::before { opacity: 1; }
+.btn-go:active { transform: scale(0.96); }
+.btn-go:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.err-bar {
+  display: none; padding: 11px 22px;
+  background: var(--red-dim);
+  border-top: 1px solid rgba(248,113,113,0.15);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; color: var(--red); line-height: 1.55;
+}
+.err-bar.show { display: block; }
+
+.out-panel {
+  padding: 22px; min-height: 140px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.out-top { display: flex; align-items: center; justify-content: space-between; }
+
+.out-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 2.2px; text-transform: uppercase;
+  color: var(--green); display: flex; align-items: center; gap: 8px;
+}
+.out-label::before { content: ''; width: 18px; height: 1px; background: currentColor; opacity: 0.4; }
+
+.btn-copy {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--dim); font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 1px; cursor: pointer;
+  transition: all 0.2s; opacity: 0; pointer-events: none;
+}
+.btn-copy.show { opacity: 1; pointer-events: all; }
+.btn-copy:hover { color: var(--green); border-color: rgba(62,207,142,0.3); background: var(--green-dim); }
+.btn-copy.done  { color: var(--green); border-color: rgba(62,207,142,0.35); background: var(--green-dim); }
+
+.out-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px; line-height: 1.72; color: var(--text); white-space: pre-wrap;
+}
+
+.out-text.empty {
+  font-family: 'Syne', sans-serif; font-size: 14px;
+  color: var(--dim); display: flex; flex-direction: column;
+  align-items: flex-start; gap: 5px;
+}
+.out-text.empty .e-icon { font-size: 22px; opacity: 0.5; }
+
+.shimmer-wrap { display: flex; flex-direction: column; gap: 11px; width: 100%; }
+.shimmer {
+  height: 13px; border-radius: 5px;
+  background: linear-gradient(90deg, var(--surface2) 0%, var(--surface3) 35%, rgba(255,140,42,0.06) 50%, var(--surface3) 65%, var(--surface2) 100%);
+  background-size: 250% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.shimmer:nth-child(2) { width: 70%; animation-delay: 0.15s; }
+.shimmer:nth-child(3) { width: 44%; animation-delay: 0.3s; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* EXAMPLES */
+.examples { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) 0.24s both; }
+
+.ex-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 12px;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  padding: 8px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.22,1,0.36,1); white-space: nowrap;
+}
+.chip:hover { background: var(--accent-dim); border-color: rgba(255,140,42,0.28); color: var(--accent); transform: translateY(-1px); }
+.chip:active { transform: translateY(0) scale(0.97); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .app { padding: 24px 14px 40px; gap: 14px; }
+  .brand-name { letter-spacing: -1px; }
+  .in-panel, .out-panel { padding: 18px 16px 12px; }
+  .out-text { font-size: 18px; }
+  .lang-tab { font-size: 12px; padding: 11px 8px; }
+  .lang-tab .em { font-size: 15px; }
+  .swap-btn { width: 42px; height: 42px; font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-noise"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+
+<div class="app">
+
+  <div class="header">
+    <div>
+      <div class="brand-name">Daksh Speaks<br>Kashmiri</div>
+      <div class="brand-koshur">کٲشُر · Koshur Translator</div>
+    </div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      AI
+    </div>
+  </div>
+
+  <div class="dir-row">
+    <div class="lang-tab active" id="tabKash" onclick="setDir('KE')">
+      <span class="em">🏔️</span> Kashmiri
+    </div>
+    <div class="swap-btn" onclick="swapDir()">⇄</div>
+    <div class="lang-tab" id="tabEng" onclick="setDir('EK')">
+      <span class="em">🌐</span> English
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="in-panel">
+      <div class="panel-top">
+        <div class="panel-label" id="inLabel">Romanized Kashmiri</div>
+        <div class="char-pill" id="charPill">0</div>
+      </div>
+      <textarea id="inputText"
+        placeholder="Kya chhu tuhund naw?&#10;Type or paste text here..."
+        spellcheck="false" autocomplete="off"
+        autocorrect="off" autocapitalize="off"></textarea>
+      <div class="in-actions">
+        <button class="btn-clear" onclick="clearAll()">✕</button>
+        <button class="btn-go" id="goBtn" onclick="doTranslate()">
+          <span>✦</span> Translate
+        </button>
+      </div>
+    </div>
+
+    <div class="err-bar" id="errBar"></div>
+
+    <div class="out-panel">
+      <div class="out-top">
+        <div class="out-label" id="outLabel">English</div>
+        <button class="btn-copy" id="copyBtn" onclick="copyOut()">⎘ COPY</button>
+      </div>
+      <div class="out-text empty" id="outText">
+        <span class="e-icon">✦</span>
+        Translation appears here
+      </div>
+    </div>
+  </div>
+
+  <div class="examples">
+    <div class="ex-label">Try an example</div>
+    <div class="chips" id="chipsEl">
+      <div class="chip" onclick="useChip(this)">Kya chhu tuhund naw?</div>
+      <div class="chip" onclick="useChip(this)">Mye chhu bahut khushi.</div>
+      <div class="chip" onclick="useChip(this)">Dal lake chhu sundar.</div>
+      <div class="chip" onclick="useChip(this)">Mye chhu Kasheer pyawun.</div>
+      <div class="chip" onclick="useChip(this)">Kyah chhu gachi khanun?</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let dir = 'KE';
+let output = '';
+
+const inputEl  = document.getElementById('inputText');
+const outEl    = document.getElementById('outText');
+const charEl   = document.getElementById('charPill');
+const errEl    = document.getElementById('errBar');
+const copyBtn  = document.getElementById('copyBtn');
+const goBtn    = document.getElementById('goBtn');
+const inLabel  = document.getElementById('inLabel');
+const outLabel = document.getElementById('outLabel');
+const tabKash  = document.getElementById('tabKash');
+const tabEng   = document.getElementById('tabEng');
+const chipsEl  = document.getElementById('chipsEl');
+
+const KE_CHIPS = ['Kya chhu tuhund naw?','Mye chhu bahut khushi.','Dal lake chhu sundar.','Mye chhu Kasheer pyawun.','Kyah chhu gachi khanun?'];
+const EK_CHIPS = ['What is your name?','I am very happy.','The Dal Lake is beautiful.','I love Kashmir.','What should I eat?'];
+
+function setDir(d) {
+  dir = d;
+  const ke = d === 'KE';
+  tabKash.classList.toggle('active', ke);
+  tabEng.classList.toggle('active', !ke);
+  inLabel.textContent  = ke ? 'Romanized Kashmiri' : 'English';
+  outLabel.textContent = ke ? 'English' : 'Romanized Kashmiri';
+  inputEl.placeholder  = ke ? 'Kya chhu tuhund naw?\nType or paste text here...' : 'What is your name?\nType or paste text here...';
+  renderChips(ke ? KE_CHIPS : EK_CHIPS);
+  clearAll();
+}
+
+function swapDir() { setDir(dir === 'KE' ? 'EK' : 'KE'); }
+
+function renderChips(list) {
+  chipsEl.innerHTML = list.map(c => `<div class="chip" onclick="useChip(this)">${c}</div>`).join('');
+}
+
+function useChip(el) {
+  inputEl.value = el.textContent;
+  charEl.textContent = el.textContent.length;
+  resetOut(); doTranslate();
+}
+
+function clearAll() {
+  inputEl.value = ''; charEl.textContent = '0';
+  resetOut(); hideErr();
+}
+
+function resetOut() {
+  output = '';
+  outEl.className = 'out-text empty';
+  outEl.innerHTML = '<span class="e-icon">✦</span>Translation appears here';
+  copyBtn.classList.remove('show','done');
+}
+
+function showErr(msg) { errEl.innerHTML = '⚠ ' + msg; errEl.classList.add('show'); }
+function hideErr() { errEl.classList.remove('show'); }
+
+async function doTranslate() {
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  goBtn.disabled = true;
+  hideErr();
+  copyBtn.classList.remove('show');
+  outEl.className = 'out-text';
+  outEl.innerHTML = `<div class="shimmer-wrap"><div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div></div>`;
+
+  try {
+    const res = await fetch('/.netlify/functions/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, direction: dir })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (res.status === 429) throw new Error('Too many requests — please wait a moment.');
+      throw new Error(data.error || 'Translation failed. Please try again.');
+    }
+
+    output = data.translation;
+    outEl.className = 'out-text';
+    outEl.style.opacity = '0';
+    outEl.textContent = output;
+    requestAnimationFrame(() => {
+      outEl.style.transition = 'opacity 0.3s ease';
+      outEl.style.opacity = '1';
+      setTimeout(() => { outEl.style.transition = ''; }, 350);
+    });
+    copyBtn.classList.add('show');
+
+  } catch (err) {
+    resetOut();
+    showErr(err.message);
+  } finally {
+    goBtn.disabled = false;
+  }
+}
+
+function copyOut() {
+  if (!output) return;
+  navigator.clipboard.writeText(output).then(() => {
+    copyBtn.textContent = '✓ COPIED';
+    copyBtn.classList.add('done');
+    setTimeout(() => { copyBtn.textContent = '⎘ COPY'; copyBtn.classList.remove('done'); }, 2000);
+  });
+}
+
+inputEl.addEventListener('input', () => { charEl.textContent = inputEl.value.length; resetOut(); hideErr(); });
+inputEl.addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') doTranslate(); });
+</script>
+</body>
+</html>
